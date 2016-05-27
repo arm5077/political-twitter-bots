@@ -126,6 +126,7 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 						console.log("No body after trying " + test.tweet.user.screen_name + "... resting for two minutes")
 						rest_period = true;
 						setTimeout(function(){ rest_period = false }, 1000 * 60 * 2)
+						callback(null);
 					}
 					else {
 						console.log("User string: " + test.tweet.user.id_str);
@@ -139,7 +140,8 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 				}	
 			], function(err, body){ 
 				if(err) throw err; 
-				console.log("Uploaded " + test.tweet.user.screen_name + " with score of " + body.score + "!")
+				if( body.score != null )
+					console.log("Uploaded " + test.tweet.user.screen_name + " with score of " + body.score + "!")
 			});
 		}
 	
