@@ -61,7 +61,10 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 								screen_name: tweet.user.screen_name,
 								count: 200
 							}, function(err, tweets, response){
-								if( err ) throw err;
+								if( err ) {
+									console.log(err)
+									throw err;
+								}
 								callback(null, tweets)
 							});
 						},
