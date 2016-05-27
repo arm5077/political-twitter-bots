@@ -48,8 +48,8 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 			
 //				console.log("max_queries=" + max_queries)
 				
-				// Check if we've already tested this username for botness
-				if( already_tested.indexOf(tweet.user.screen_name) == -1 && max_queries >= 0){
+				// Check if we've already tested this username for botness AND if we have room in the queue
+				if( already_tested.indexOf(tweet.user.screen_name) == -1 && max_queries <= 50){
 					max_queries--;
 					
 //					console.log(tweet.user.screen_name + " hasn't been screened yet...")
