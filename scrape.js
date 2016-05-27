@@ -10,7 +10,8 @@ var ids_to_candidates = {'25073877': 'realdonaldtrump', '1339835893': 'hillarycl
 	ids_string = candidate_ids.join(','),
 	max_queries = 150,
 	already_tested = [], 
-	botOrNotQueue = [];
+	botOrNotQueue = [], 
+	rest_period = false;
 
 // Initialize Twitter client
 var client = new Twitter({
@@ -89,10 +90,11 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 		}
 	});
 	
-	// Submit a new request to BotOrNot every five seconds
+	// Submit a new request to BotOrNot every ten seconds
 	setInterval(function(){
 		 
-		if( botOrNotQueue.length > 0 ){
+		// Is there something in the queue to test? And are we in a don't-overwhelm-the-servers rest period?
+		if( botOrNotQueue.length > 0 && !rest_period ){
 			console.log("Queue length: " + botOrNotQueue.length);
 			var test = botOrNotQueue[0];
 			botOrNotQueue.splice(0,1);
@@ -122,8 +124,9 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 
 					// debug
 					if(body.score == null){
-						console.log("No body...")
-						console.log(body);
+						console.log("No body... resting for two minutes")
+						rest_period = true;
+						setTimeout(function(){ rest_period = false }, 1000 * 60 * 2)
 					}
 					else {
 						console.log("User string: " + test.tweet.user.id_str);
@@ -148,11 +151,3 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 	});
 	
 });
-
-/*
-
-
-
-
-
-*/
