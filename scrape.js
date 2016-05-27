@@ -40,7 +40,7 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 		if(tweet.retweeted_status){
 			// Is it actually a retweet of a candidate's tweet?
 			if(candidates.indexOf(tweet.retweeted_status.user.screen_name.toLowerCase()) != -1){
-//				console.log("@" + tweet.user.screen_name + " retweeted " + tweet.retweeted_status.user.screen_name);
+				console.log("@" + tweet.user.screen_name + " retweeted " + tweet.retweeted_status.user.screen_name);
 				
 				// Record log of retweet
 				pool.query("INSERT INTO tweets (candidate_id, user_id, tweet_id) VALUES (?,?,?)", 
@@ -50,7 +50,7 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 //				console.log("max_queries=" + max_queries)
 				
 				// Check if we've already tested this username for botness AND if we have room in the queue
-				if( already_tested.indexOf(tweet.user.screen_name) == -1 && max_queries <= 50){
+				if( already_tested.indexOf(tweet.user.screen_name) == -1 && botOrNotQueue.length <= 50){
 					max_queries--;
 					
 //					console.log(tweet.user.screen_name + " hasn't been screened yet...")
@@ -92,9 +92,8 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 	
 	// Submit a new request to BotOrNot every ten seconds
 	setInterval(function(){
-		 
 		// Is there something in the queue to test? And are we in a don't-overwhelm-the-servers rest period?
-		if( botOrNotQueue.length > 0 && !rest_period ){
+		if( botOrNotQueue.length > 0 && rest_period==false ){
 			console.log("Queue length: " + botOrNotQueue.length);
 			var test = botOrNotQueue[0];
 			botOrNotQueue.splice(0,1);
