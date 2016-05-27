@@ -40,7 +40,7 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 		if(tweet.retweeted_status){
 			// Is it actually a retweet of a candidate's tweet?
 			if(candidates.indexOf(tweet.retweeted_status.user.screen_name.toLowerCase()) != -1){
-				console.log("@" + tweet.user.screen_name + " retweeted " + tweet.retweeted_status.user.screen_name);
+//				console.log("@" + tweet.user.screen_name + " retweeted " + tweet.retweeted_status.user.screen_name);
 				
 				// Record log of retweet
 				pool.query("INSERT INTO tweets (candidate_id, user_id, tweet_id) VALUES (?,?,?)", 
@@ -123,7 +123,7 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 
 					// debug
 					if(body.score == null){
-						console.log("No body... resting for two minutes")
+						console.log("No body after trying " + test.tweet.user.screen_name + "... resting for two minutes")
 						rest_period = true;
 						setTimeout(function(){ rest_period = false }, 1000 * 60 * 2)
 					}
