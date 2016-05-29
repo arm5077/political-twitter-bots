@@ -113,12 +113,12 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 				// Store user information in database
 				function(body, callback){
 
-					// Still have to debug this weird server error; for now just rest for 2 minutes
+					// Still have to debug this weird server error; for now just rest for 30 seconds
 					if(body.score == null){
-						console.log("No body after trying " + test.tweet.user.screen_name + "... resting for two minutes")
+						console.log("No body after trying " + test.tweet.user.screen_name + "... resting for 30 seconds minutes")
 						console.log("The error: \n" + body)
 						rest_period = true;
-						setTimeout(function(){ rest_period = false }, 1000 * 60 * 2)
+						setTimeout(function(){ rest_period = false }, 1000 * 30)
 						callback();
 					}
 					else {
