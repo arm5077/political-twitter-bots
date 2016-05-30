@@ -140,7 +140,7 @@ client.stream('statuses/filter', {follow: ids_string}, function(stream) {
 					console.log("Uploaded " + test.tweet.user.screen_name + " with score of " + body.score + "!")
 			});
 		}
-	}, 10000);
+	}, 30000);
 	
 	stream.on('error', function(error) {
 	  throw error;
